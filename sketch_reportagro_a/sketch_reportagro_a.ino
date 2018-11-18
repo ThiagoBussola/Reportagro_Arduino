@@ -38,8 +38,7 @@ byte grau[8] ={ B00001100,
 DHT dht(DHTPIN, DHTTYPE);
 
 // --- Protótipo das funções auxiliáres ---
-String sendData(String command, const int timeout, boolean debug)
-{
+String sendData(String command, const int timeout, boolean debug){
   // Envio dos comandos AT para o modulo
   String response = "";
   esp8266.print(command);
@@ -104,36 +103,8 @@ void loop() {
 
 // ========================================== Wi-Fi ========================================== //
 
-// ==================================================================================================================== //
 
-  float h = dht.readHumidity(); //Le o valor da umidade
-  float t = dht.readTemperature(); //Le o valor da temperatura
-  lcd.setCursor(0,0);
-  lcd.print("Temp : ");
-  lcd.print(" ");
-  lcd.setCursor(7,0);
-  lcd.print(t,1);
-  lcd.setCursor(12,0);
-   
-  //Mostra o simbolo do grau formado pelo array
-  lcd.write((byte)0);
-   
-  //Mostra o simbolo do grau quadrado
-  //lcd.print((char)223);
-   
-  lcd.setCursor(0,1);
-  lcd.print("Umid : ");
-  lcd.print(" ");
-  lcd.setCursor(7,1);
-  lcd.print(h,1);
-  lcd.setCursor(12,1);
-  lcd.print("%");
-   
-  //Intervalo recomendado para leitura do sensor
-  delay(2000);
-
-
-  // ===================================================== Umidade da Terra ======================================================== //
+// ===================================================== Umidade da Terra ======================================================== //
   valor_analogico_solo = analogRead(sinal_analogico);
  
   Serial.print("Porta analogica: ");
@@ -160,6 +131,48 @@ void loop() {
     digitalWrite(led_vermelho_solo, HIGH);
   }
   delay(100);
+
+// =============================================== LCD e DHT ==================================================================== //
+
+  float humidity = dht.readHumidity(); //Le o valor da umidade
+  float temperature = dht.readTemperature(); //Le o valor da temperatura
+  lcd.setCursor(0,0);
+  lcd.print("Temp : ");
+  lcd.print(" ");
+  lcd.setCursor(7,0);
+  lcd.print(temperature,1);
+  lcd.setCursor(12,0);
+   
+  //Mostra o simbolo do grau formado pelo array
+  lcd.write((byte)0);
+   
+  //Mostra o simbolo do grau quadrado
+  //lcd.print((char)223);
+   
+  lcd.setCursor(0,1);
+  lcd.print("Umid : ");
+  lcd.print(" ");
+  lcd.setCursor(7,1);
+  lcd.print(humidity,1);
+  lcd.setCursor(12,1);
+  lcd.print("%");
+  //Intervalo recomendado para leitura do sensor
+  delay(2000);
+
+
+  lcd.scrollDisplayLeft();
+  delay(400);
+
+  if (valor_analogico_solo > 0 && valor_analogico_solo < 400){
+    lcd.setCursor(0,1);
+    lcd.print("SOLO UMIDO");
+  } else if (valor_analogico_solo > 400 && valor_analogico_solo < 800){
+    lcd.setCursor(0,1);
+    lcd.print("UMIDADE MODERADA");
+  } else {
+    lcd.setCursor(0,1);
+    lcd.print("SOLO SECO");
+  }
 
   // ========================================= Sensor de Luz ============================================//
 
