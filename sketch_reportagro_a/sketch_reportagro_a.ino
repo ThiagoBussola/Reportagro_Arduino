@@ -22,7 +22,7 @@ int ldr  = A3;
 #define led_amarelo_solo 5
 #define led_verde_solo 6
 //Define os pinos que serão ligados ao LCD
-LiquidCrystal lcd(12, 11, 10, 9, 8, 7);
+LiquidCrystal lcd(7,8,9,10,11,12);
  
 //Array simbolo grau
 byte grau[8] ={ B00001100,
@@ -33,7 +33,6 @@ byte grau[8] ={ B00001100,
                 B00000000,
                 B00000000,
                 B00000000,};
-
 
 DHT dht(DHTPIN, DHTTYPE);
 
